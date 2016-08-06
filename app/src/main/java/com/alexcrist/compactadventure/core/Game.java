@@ -1,13 +1,9 @@
-package com.alexcrist.compactadventure.view;
+package com.alexcrist.compactadventure.core;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.alexcrist.compactadventure.model.Drawer;
-import com.alexcrist.compactadventure.model.MotionHandler;
-import com.alexcrist.compactadventure.model.World;
 
 public class Game extends View {
 
@@ -22,7 +18,7 @@ public class Game extends View {
     public Game(Context context, int level) {
         this(context);
         world = new World(level);
-        drawer = new Drawer(world, context);
+        drawer = new Drawer(world, context.getResources());
         motionHandler = new MotionHandler(world);
     }
 

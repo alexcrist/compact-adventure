@@ -1,6 +1,5 @@
-package com.alexcrist.compactadventure.model;
+package com.alexcrist.compactadventure.core;
 
-import android.util.Log;
 import android.view.MotionEvent;
 
 public class MotionHandler {

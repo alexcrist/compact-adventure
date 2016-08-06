@@ -3,7 +3,7 @@ package com.alexcrist.compactadventure.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.alexcrist.compactadventure.view.Game;
+import com.alexcrist.compactadventure.core.Game;
 
 public class PlayActivity extends AppCompatActivity {
 
