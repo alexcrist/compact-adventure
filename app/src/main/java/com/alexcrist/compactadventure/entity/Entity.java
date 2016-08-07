@@ -11,11 +11,12 @@ public abstract class Entity {
 
     public static final int PLAYER_TYPE = 0;
     public static final int SKELETON_TYPE = 1;
+    public static final int BALLOON_TYPE = 2;
 
-    public Entity(float x, float y, float angle) {
+    public Entity(float x, float y) {
         this.x = x;
         this.y = y;
-        this.angle = angle;
+        this.angle = 0;
         this.alive = true;
     }
 

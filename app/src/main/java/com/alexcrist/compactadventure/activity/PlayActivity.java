@@ -11,7 +11,7 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int level = 1; // TEMPORARY VALUE
+        int level = 2; // TEMPORARY VALUE
         Game game = new Game(this, level);
 
         setContentView(game);

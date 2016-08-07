@@ -16,9 +16,11 @@ public class Drawer {
     private Bitmap playerImage;
     private Bitmap sword1Image;
     private Bitmap skeletonImage;
+    private Bitmap balloonImage;
     private Paint shadowPaint;
     private int w;
     private int h;
+    private boolean debugMode;
 
     private final static float SHADOW_DISTANCE = 1.01f;
     private final static float SHADOW_SIZE = 1.1f;
@@ -27,6 +29,7 @@ public class Drawer {
         this.world = world;
         this.shadowPaint = new Paint();
         this.shadowPaint.setARGB(100, 100, 100, 100);
+        this.debugMode = false;
         initBitmaps(res);
     }
 
@@ -37,8 +40,6 @@ public class Drawer {
     }
 
     public void draw(Canvas canvas) {
-        Paint paint = new Paint(); // Placeholder for bitmaps
-
         for (Entity entity : world.entities) {
             if (entity.alive) {
 
@@ -55,27 +56,18 @@ public class Drawer {
                         drawBitmap(canvas, skeletonImage, x, y, angle);
                         break;
 
+                    case Entity.BALLOON_TYPE:
+                        drawBitmap(canvas, balloonImage, x, y, angle);
+                        break;
+
                     case Entity.PLAYER_TYPE:
                         drawBitmap(canvas, sword1Image, x, y, angle);
                         drawBitmap(canvas, playerImage, x, y, angle);
-
-                        canvas.save();
-
-                        float left = x + radius;
-                        float top = y - world.player.swordWidth;
-                        float right = x + radius + world.player.swordLength;
-                        float bottom = y + world.player.swordWidth;
-
-                        canvas.rotate(angle, x, y);
-                        paint.setColor(Color.GREEN);
-                        //canvas.drawRect(left, top, right, bottom, paint);
-                        canvas.restore();
-
+                        drawSwordHitbox(canvas, x, y, radius, angle);
                         break;
                 }
 
-                paint.setColor(Color.RED);
-                //canvas.drawCircle(x, y, radius, paint);
+                drawEntityHitbox(canvas, x, y, radius);
             }
         }
     }
@@ -99,13 +91,41 @@ public class Drawer {
         canvas.drawCircle(shadowX, shadowY, radius * SHADOW_SIZE, shadowPaint);
     }
 
+    private void drawEntityHitbox(Canvas canvas, float x, float y, float radius) {
+        if (debugMode) {
+            Paint paint = new Paint();
+            paint.setARGB(200, 0, 0, 255);
+            canvas.drawCircle(x, y, radius, paint);
+        }
+    }
+
+    private void drawSwordHitbox(Canvas canvas, float x, float y, float radius, float angle) {
+        if (debugMode) {
+            Paint paint = new Paint();
+            paint.setARGB(200, 0, 255, 0);
+
+            float left = x + radius;
+            float top = y - world.player.swordWidth;
+            float right = x + radius + world.player.swordLength;
+            float bottom = y + world.player.swordWidth;
+
+            canvas.save();
+            canvas.rotate(angle, x, y);
+            canvas.drawRect(left, top, right, bottom, paint);
+            canvas.restore();
+        }
+    }
+
     private void initBitmaps(Resources res) {
         playerImage = BitmapFactory.decodeResource(res, R.drawable.player_image);
         sword1Image = BitmapFactory.decodeResource(res, R.drawable.sword_1_image);
         skeletonImage = BitmapFactory.decodeResource(res, R.drawable.skeleton_image);
+        balloonImage = BitmapFactory.decodeResource(res, R.drawable.balloon_image);
     }
 
     private void scaleBitmaps(int w, int h) {
         // TODO - got to do this later
     }
+
+
 }

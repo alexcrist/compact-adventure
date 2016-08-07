@@ -14,8 +14,8 @@ public class Player extends Movable {
     private final static float SWORD_LENGTH = .11f;
     private final static float SWORD_WIDTH = .011f;
 
-    public Player(float x, float y, float angle) {
-        super(x, y, angle);
+    public Player(float x, float y) {
+        super(x, y);
         this.radius = PLAYER_RADIUS;
         this.speed = PLAYER_SPEED;
         this.turningAngle = PLAYER_TURNING_ANGLE;

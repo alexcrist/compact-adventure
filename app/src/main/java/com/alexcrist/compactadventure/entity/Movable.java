@@ -5,8 +5,8 @@ public abstract class Movable extends Entity {
     protected float fVel; // Forward velocity
     protected float aVel; // Angular velocity clockwise
 
-    public Movable(float x, float y, float angle) {
-        super(x, y, angle);
+    public Movable(float x, float y) {
+        super(x, y);
         this.fVel = 0;
         this.aVel = 0;
     }

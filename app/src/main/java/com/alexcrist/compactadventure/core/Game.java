@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.alexcrist.compactadventure.util.WorldFactory;
+
 public class Game extends View {
 
     private World world;
@@ -17,9 +19,11 @@ public class Game extends View {
 
     public Game(Context context, int level) {
         this(context);
-        world = new World(level);
-        drawer = new Drawer(world, context.getResources());
-        motionHandler = new MotionHandler(world);
+        WorldFactory worldFactory = new WorldFactory();
+
+        this.world = worldFactory.generateWorld(level);
+        this.drawer = new Drawer(world, context.getResources());
+        this.motionHandler = new MotionHandler(world);
     }
 
     // Called when the view is first created (or its size changes)

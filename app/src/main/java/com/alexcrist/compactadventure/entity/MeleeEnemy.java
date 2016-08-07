@@ -5,14 +5,15 @@ public abstract class MeleeEnemy extends Enemy {
     public float speed;
     public float turningAngle;
 
-    public MeleeEnemy(float x, float y, float angle, Player player) {
-        super(x, y, angle, player);
+    public MeleeEnemy(float x, float y, Player player) {
+        super(x, y, player);
     }
 
     @Override
     public void update() {
         super.update();
 
+        // Calculate angle to player
         float dY = player.y - y;
         float dX = player.x - x;
         float angleToPlayer = (float) Math.toDegrees(Math.atan2(dY, dX));
@@ -20,6 +21,7 @@ public abstract class MeleeEnemy extends Enemy {
         float dAngle = angleToPlayer - angle;
         dAngle = dAngle < 0 ? dAngle + 360 : dAngle;
 
+        // Determine whether to turn CW or CCW
         if (dAngle < turningAngle || 360 - dAngle < turningAngle) {
             angle = angleToPlayer;
         } else if (dAngle < 180) {
@@ -28,6 +30,7 @@ public abstract class MeleeEnemy extends Enemy {
             angle -= turningAngle;
         }
 
+        // Move forwards at constant speed
         fVel = speed;
     }
 
