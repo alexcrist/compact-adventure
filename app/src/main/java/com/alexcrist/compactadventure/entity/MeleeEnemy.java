@@ -16,22 +16,17 @@ public abstract class MeleeEnemy extends Enemy {
         float dY = player.y - y;
         float dX = player.x - x;
         float angleToPlayer = (float) Math.toDegrees(Math.atan2(dY, dX));
-        angle = angleToPlayer;
-//        angleToPlayer = angleToPlayer < 0 ? angleToPlayer + 360 : angleToPlayer;
+        angleToPlayer = angleToPlayer < 0 ? angleToPlayer + 360 : angleToPlayer;
+        float dAngle = angleToPlayer - angle;
+        dAngle = dAngle < 0 ? dAngle + 360 : dAngle;
 
-        // TODO - fix
-//        if (Math.abs(angleToPlayer - angle) < turningAngle) {
-//            angle = angleToPlayer;
-//        } else {
-//            float dAngle = angleToPlayer - angle;
-//            dAngle = dAngle < 0 ? dAngle + 360 : dAngle;
-//
-//            if (dAngle > 180) {
-//                angle = angle - turningAngle;
-//            } else {
-//                angle = angle + turningAngle;
-//            }
-//        }
+        if (dAngle < turningAngle || 360 - dAngle < turningAngle) {
+            angle = angleToPlayer;
+        } else if (dAngle < 180) {
+            angle += turningAngle;
+        } else {
+            angle -= turningAngle;
+        }
 
         fVel = speed;
     }

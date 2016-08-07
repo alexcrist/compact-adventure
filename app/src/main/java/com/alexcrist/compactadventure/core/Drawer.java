@@ -13,20 +13,27 @@ import com.alexcrist.compactadventure.entity.Entity;
 public class Drawer {
 
     private World world;
-    private int w;
-    private int h;
     private Bitmap playerImage;
     private Bitmap sword1Image;
     private Bitmap skeletonImage;
+    private Paint shadowPaint;
+    private int w;
+    private int h;
+
+    private final static float SHADOW_DISTANCE = 1.01f;
+    private final static float SHADOW_SIZE = 1.1f;
 
     public Drawer(World world, Resources res) {
         this.world = world;
+        this.shadowPaint = new Paint();
+        this.shadowPaint.setARGB(100, 100, 100, 100);
         initBitmaps(res);
     }
 
     public void scaleToScreen(int w, int h) {
         this.w = w;
         this.h = h;
+        scaleBitmaps(w, h);
     }
 
     public void draw(Canvas canvas) {
@@ -39,6 +46,8 @@ public class Drawer {
                 float y = entity.y;
                 float angle = entity.angle;
                 float radius = entity.radius;
+
+                drawShadow(canvas, x, y, radius);
 
                 switch (entity.type()) {
 
@@ -59,14 +68,14 @@ public class Drawer {
 
                         canvas.rotate(angle, x, y);
                         paint.setColor(Color.GREEN);
-                        canvas.drawRect(left, top, right, bottom, paint);
+                        //canvas.drawRect(left, top, right, bottom, paint);
                         canvas.restore();
 
                         break;
                 }
 
                 paint.setColor(Color.RED);
-                canvas.drawCircle(x, y, radius, paint);
+                //canvas.drawCircle(x, y, radius, paint);
             }
         }
     }
@@ -78,10 +87,25 @@ public class Drawer {
         canvas.restore();
     }
 
+    private void drawShadow(Canvas canvas, float x, float y, float radius) {
+        float dX = x - w / 2;
+        float dY = y - h / 2;
+        float distFromOrigin = (float) Math.sqrt(dX * dX + dY * dY);
+        float angleToOrigin = (float) Math.atan2(dY, dX);
+
+        float shadowX = w / 2 + distFromOrigin * SHADOW_DISTANCE * (float) Math.cos(angleToOrigin);
+        float shadowY = h / 2  + distFromOrigin * SHADOW_DISTANCE * (float) Math.sin(angleToOrigin);
+
+        canvas.drawCircle(shadowX, shadowY, radius * SHADOW_SIZE, shadowPaint);
+    }
+
     private void initBitmaps(Resources res) {
         playerImage = BitmapFactory.decodeResource(res, R.drawable.player_image);
         sword1Image = BitmapFactory.decodeResource(res, R.drawable.sword_1_image);
         skeletonImage = BitmapFactory.decodeResource(res, R.drawable.skeleton_image);
     }
 
+    private void scaleBitmaps(int w, int h) {
+        // TODO - got to do this later
+    }
 }
