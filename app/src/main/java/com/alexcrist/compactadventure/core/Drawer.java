@@ -24,27 +24,21 @@ public class Drawer {
         initBitmaps(res);
     }
 
-    public void initSize(int w, int h) {
+    public void scaleToScreen(int w, int h) {
         this.w = w;
         this.h = h;
     }
 
     public void draw(Canvas canvas) {
         Paint paint = new Paint(); // Placeholder for bitmaps
-        paint.setColor(Color.RED);
 
         for (Entity entity : world.entities) {
             if (entity.alive) {
-                // Translating positions and radii:
-                //   0,0   = center
-                //   1,1   = top right
-                //   -1,-1 = bottom left
-                //   radius of .2 = object's radius is 20% of screen width
-                float x = entity.x * w / 2 + w / 2;
-                float y = -entity.y * h / 2 + h / 2;
-                float radius = entity.radius * w / 2;
 
+                float x = entity.x;
+                float y = entity.y;
                 float angle = entity.angle;
+                float radius = entity.radius;
 
                 switch (entity.type()) {
 
@@ -55,9 +49,23 @@ public class Drawer {
                     case Entity.PLAYER_TYPE:
                         drawBitmap(canvas, sword1Image, x, y, angle);
                         drawBitmap(canvas, playerImage, x, y, angle);
+
+                        canvas.save();
+
+                        float left = x + radius;
+                        float top = y - world.player.swordWidth;
+                        float right = x + radius + world.player.swordLength;
+                        float bottom = y + world.player.swordWidth;
+
+                        canvas.rotate(angle, x, y);
+                        paint.setColor(Color.GREEN);
+                        canvas.drawRect(left, top, right, bottom, paint);
+                        canvas.restore();
+
                         break;
                 }
 
+                paint.setColor(Color.RED);
                 canvas.drawCircle(x, y, radius, paint);
             }
         }
@@ -65,7 +73,7 @@ public class Drawer {
 
     private void drawBitmap(Canvas canvas, Bitmap image, float x, float y, float angle) {
         canvas.save();
-        canvas.rotate(-angle + 90, x, y);
+        canvas.rotate(angle + 90, x, y);
         canvas.drawBitmap(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
         canvas.restore();
     }

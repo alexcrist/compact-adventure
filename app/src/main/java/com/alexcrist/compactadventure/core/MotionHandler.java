@@ -23,8 +23,8 @@ public class MotionHandler {
         this.ready2 = true;
     }
 
-    // Set screen width and height
-    public void initSize(int w, int h) {
+    // Scale to screen size
+    public void scaleToScreen(int w, int h) {
         this.w = w;
         this.h = h;
         this.SWIPE_THRESHOLD = h / 10;

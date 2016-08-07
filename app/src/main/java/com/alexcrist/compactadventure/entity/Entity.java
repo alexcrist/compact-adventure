@@ -24,4 +24,11 @@ public abstract class Entity {
 
     // Returns the type of entity
     public abstract int type();
+
+    // Scales coordinates from [0-1] to [0-screenSize]
+    public void scaleToScreen(int w, int h) {
+        x = x * w;
+        y = y * h;
+        radius = radius * h;
+    }
 }

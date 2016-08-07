@@ -25,8 +25,9 @@ public class Game extends View {
     // Called when the view is first created (or its size changes)
     @Override
     public void onSizeChanged(int w, int h, int oldW, int oldH) {
-        drawer.initSize(w, h);
-        motionHandler.initSize(w, h);
+        world.scaleToScreen(w, h);
+        drawer.scaleToScreen(w, h);
+        motionHandler.scaleToScreen(w, h);
     }
 
     // Called to draw the view. Also called from invalidate()

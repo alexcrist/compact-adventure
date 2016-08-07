@@ -7,15 +7,17 @@ import com.alexcrist.compactadventure.entity.Skeleton;
 public class World {
 
     private int level;
-    private Player player;
+    private int w;
+    private int h;
     private Skeleton skeleton;
-    public Entity[] entities;
 
+    public Player player;
+    public Entity[] entities;
 
     public World(int level) {
         this.level = level;
-        this.player = new Player(0, 0, 0);
-        this.skeleton = new Skeleton(0, 0, 0, player);
+        this.player = new Player(.5f, .5f, 0);
+        this.skeleton = new Skeleton(.25f, .25f, 0, player);
         this.entities = new Entity[2];
         this.entities[0] = player;
         this.entities[1] = skeleton;
@@ -40,6 +42,16 @@ public class World {
         }
     }
 
+    // Scale world to screen size
+    public void scaleToScreen(int w, int h) {
+        this.w = w;
+        this.h = h;
+
+        for (Entity entity : entities) {
+            entity.scaleToScreen(w, h);
+        }
+    }
+
     public void leftUpAction() {
         player.leftUpAction();
     }
@@ -58,16 +70,16 @@ public class World {
 
     // Keep entity within the screen
     private void keepInbounds(Entity entity) {
-        if (entity.x < -1) {
-            entity.x = -1;
-        } else if (entity.x > 1) {
-            entity.x = 1;
+        if (entity.x < 0) {
+            entity.x = 0;
+        } else if (entity.x > w) {
+            entity.x = w;
         }
 
-        if (entity.y < -1) {
-            entity.y = -1;
-        } else if (entity.y > 1) {
-            entity.y = 1;
+        if (entity.y < 0) {
+            entity.y = 0;
+        } else if (entity.y > h) {
+            entity.y = h;
         }
     }
 
@@ -80,6 +92,50 @@ public class World {
 
     // Test if enemy is colliding with sword
     private boolean collisionWithSword(Entity entity) {
+//        // Coordinates of sword's center (sword is a rectangle)
+//        float swordX = player.x + (player.radius + player.swordLength / 2) * (float) Math.cos(Math.toRadians(player.angle));
+//        float swordY = player.y + (player.radius + player.swordLength / 2) * (float) Math.sin(Math.toRadians(player.angle));
+//
+//        // Translate entity so that center of sword lies at (0, 0)
+//        float tX = entity.x - swordX;
+//        float tY = entity.y - swordY;
+//
+//        // Rotate entity around origin so that sword lies horizontally flat
+//        float entityAngle = (float) Math.toDegrees(Math.atan2(tY, tX));
+//        float distFromOrigin = (float) Math.sqrt(tX * tX + tY * tY);
+//        float rX = distFromOrigin * (float) Math.cos(Math.toRadians(entityAngle - player.angle));
+//        float rY = distFromOrigin * (float) Math.sin(Math.toRadians(entityAngle - player.angle));
+//
+//        // Define sword's rectangle's width and height
+//        float width = player.swordLength;
+//        float height = player.swordWidth;
+//
+//        // Translate once more so bottom left of rectangle lies at (0, 0), then take absolute value
+//        float aX = Math.abs(rX);
+//        float aY = Math.abs(rY);
+//
+//        if (aX > width / 2 + entity.radius) {
+//            return false;
+//        }
+//
+//        if (aY > height / 2 + entity.radius) {
+//            return false;
+//        }
+//
+//        if (aX <= width / 2) {
+//            return true;
+//        }
+//
+//        if (aY <= height / 2) {
+//            return true;
+//        }
+//
+//        // Calculate distance to corner
+//        float cX = aX - width / 2;
+//        float cY = aY - height / 2;
+//        float cD = (float) Math.sqrt(cX * cX + cY * cY);
+//
+//        return cD <= entity.radius;
         return false;
     }
 }

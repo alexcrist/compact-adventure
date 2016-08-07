@@ -5,39 +5,54 @@ public class Player extends Movable {
     public float swordLength;
     public float swordWidth;
 
-    private static final float F_VEL_INCREMENT = .01f; // Amount to increment positional vel. upon move
-    private static final float A_VEL_INCREMENT = 5;    // Amount to increment angular vel. upon move
-    private static final float PLAYER_RADIUS = .09f;
+    private float speed;
+    private float turningAngle;
+
+    private final static float PLAYER_RADIUS = .08f;
+    private final static float PLAYER_SPEED = .01f;
+    private final static float PLAYER_TURNING_ANGLE = 5;
+    private final static float SWORD_LENGTH = .11f;
+    private final static float SWORD_WIDTH = .011f;
 
     public Player(float x, float y, float angle) {
         super(x, y, angle);
         this.radius = PLAYER_RADIUS;
-        this.swordLength = .09f;
-        this.swordWidth = .01f;
+        this.speed = PLAYER_SPEED;
+        this.turningAngle = PLAYER_TURNING_ANGLE;
+        this.swordLength = SWORD_LENGTH;
+        this.swordWidth = SWORD_WIDTH;
     }
 
     public void leftUpAction() {
-        fVel += F_VEL_INCREMENT;
-        aVel -= A_VEL_INCREMENT;
+        fVel += speed;
+        aVel += turningAngle;
     }
 
     public void rightUpAction() {
-        fVel += F_VEL_INCREMENT;
-        aVel += A_VEL_INCREMENT;
+        fVel += speed;
+        aVel -= turningAngle;
     }
 
     public void leftDownAction() {
-        fVel -= F_VEL_INCREMENT;
-        aVel += A_VEL_INCREMENT;
+        fVel -= speed;
+        aVel -= turningAngle;
     }
 
     public void rightDownAction() {
-        fVel -= F_VEL_INCREMENT;
-        aVel -= A_VEL_INCREMENT;
+        fVel -= speed;
+        aVel += turningAngle;
     }
 
     @Override
     public int type() {
         return Entity.PLAYER_TYPE;
+    }
+
+    @Override
+    public void scaleToScreen(int w, int h) {
+        super.scaleToScreen(w, h);
+        speed = speed * h;
+        swordLength = swordLength * h;
+        swordWidth = swordWidth * h;
     }
 }
