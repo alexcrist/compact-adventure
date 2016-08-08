@@ -8,18 +8,23 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.alexcrist.compactadventure.activity.DetailsActivity">
+    tools:context="com.alexcrist.compactadventure.activity.LevelActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="30sp"
-        android:id="@+id/details_level_text"/>
+        android:text="Level Select"/>
 
-    <Button
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/go_button"
-        android:text="Go!"/>
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/level_table">
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>

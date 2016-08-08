@@ -20,8 +20,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/play_button"
-        android:text="Play"/>
+        android:id="@+id/story_button"
+        android:text="Story"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/free_play_button"
+        android:text="Free Play"/>
 
     <Button
         android:layout_width="match_parent"
