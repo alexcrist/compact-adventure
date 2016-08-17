@@ -34,7 +34,7 @@ public class Player extends Movable {
         this.turningAngle = PLAYER_TURNING_ANGLE;
         this.swordLength = SWORD_LENGTH;
         this.swordWidth = SWORD_WIDTH;
-        this.invincibilityTimer = MAX_INVINCIBILITY_TIME;
+        this.invincibilityTimer = 0;
         this.health = BASE_MAX_HEALTH;
         this.maxHealth = BASE_MAX_HEALTH;
     }

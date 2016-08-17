@@ -47,12 +47,10 @@ public class LevelActivity extends AppCompatActivity implements View.OnClickList
 
             levelTable.addView(row);
         }
-
     }
 
     @Override
     public void onClick(View view) {
-        Log.i("CLICK", "CLICK");
         int level = Integer.parseInt(((Button) view).getText().toString());
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra("level", level);
