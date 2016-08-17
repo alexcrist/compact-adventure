@@ -8,4 +8,9 @@ public abstract class Enemy extends Movable {
         super(x, y);
         this.player = player;
     }
+
+    @Override
+    public boolean isEnemy() {
+        return true;
+    }
 }

@@ -32,4 +32,8 @@ public abstract class Entity {
         y = y * h;
         radius = radius * h;
     }
+
+    public boolean isEnemy() {
+        return false;
+    }
 }

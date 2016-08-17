@@ -10,23 +10,34 @@ public class World {
     private int w;
     private int h;
 
+    public int numEnemies;
+    public int maxEnemies;
+
+    public int gameStatus;
+
     public Player player;
     public Entity[] entities;
 
+    public final static int GAME_IN_PROGRESS = 0;
+    public final static int GAME_OVER_SUCCESS = 1;
+    public final static int GAME_OVER_FAILURE = 2;
 
     public World(Player player, Entity[] entities) {
         this.player = player;
         this.entities = entities;
         this.collisionCalculator = new CollisionCalculator();
+        this.maxEnemies = countEnemies(entities);
+        this.numEnemies = maxEnemies;
+        this.gameStatus = GAME_IN_PROGRESS;
     }
 
     // Update all entities in the world
     public void update() {
-        if (player.alive) {
-            for (Entity entity : entities) {
-                if (entity.alive) {
-                    entity.update();
+        for (Entity entity : entities) {
+            if (entity.alive) {
+                entity.update();
 
+                if (player.alive) {
                     // Specific behavior for different entity types
                     switch (entity.type()) {
 
@@ -36,7 +47,7 @@ public class World {
 
                         case Entity.SKELETON_TYPE:
                             handleEnemyDeath(entity);
-                            handlePlayerCollision(entity);
+                            handleEnemyPlayerCollision(entity);
                             break;
 
                         case Entity.BALLOON_TYPE:
@@ -45,6 +56,12 @@ public class World {
                     }
                 }
             }
+        }
+
+        if (numEnemies == 0) {
+            gameStatus = GAME_OVER_SUCCESS;
+        } else if (!player.alive) {
+            gameStatus = GAME_OVER_FAILURE;
         }
     }
 
@@ -90,22 +107,31 @@ public class World {
     }
 
     // Test for and handle enemy collisions with player
-    private void handlePlayerCollision(Entity entity) {
+    private void handleEnemyPlayerCollision(Entity entity) {
         if (collisionCalculator.entityCollision(player, entity)) {
-            playerHit();
+            player.damaged(entity.x, entity.y);
         }
     }
 
     // Test for and handle enemy death scenarios
     private void handleEnemyDeath(Entity entity) {
-        // Enemy colliding with sword
-        if (collisionCalculator.swordCollision(player, entity)) {
-            entity.alive = false;
+        // Enemy is alive and collides with sword
+        if (entity.alive) {
+            if (collisionCalculator.swordCollision(player, entity)) {
+                entity.alive = false;
+                numEnemies--;
+            }
         }
     }
 
-    // Player has been hit
-    private void playerHit() {
-
+    // Count the total number of entities which are enemies
+    private int countEnemies(Entity[] entities) {
+        int numEnemies = 0;
+        for (Entity entity : entities) {
+            if (entity.isEnemy()) {
+                numEnemies++;
+            }
+        }
+        return numEnemies;
     }
 }
