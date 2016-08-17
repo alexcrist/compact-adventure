@@ -66,7 +66,7 @@ public class Game extends View {
                 if (world.gameStatus == World.GAME_OVER_SUCCESS) {
                     dialogDisplayed = true;
                     String msg = Integer.toString(world.maxEnemies);
-                    msg = msg.equals("1") ? msg + " enemy defeated." : " enemies defeated";
+                    msg = msg.equals("1") ? msg + " enemy defeated." : msg + " enemies defeated.";
                     successDialog.setMessage(msg);
                     successDialog.show();
                 } else if (world.gameStatus == World.GAME_OVER_FAILURE) {
