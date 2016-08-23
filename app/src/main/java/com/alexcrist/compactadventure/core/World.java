@@ -124,7 +124,7 @@ public class World {
         }
     }
 
-    // Count the total number of entities which are enemies
+    // Count the total number of entities which are enemiesBar
     private int countEnemies(Entity[] entities) {
         int numEnemies = 0;
         for (Entity entity : entities) {

@@ -1,16 +1,17 @@
 package com.alexcrist.compactadventure.core;
 
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class MotionHandler {
 
     private World world;
 
-    private float yStart1; // Initial y value of finger #1
-    private float yStart2; // Initial y value of finger #2 (2 simultaneous touches max)
+    private boolean leftReady;
+    private boolean rightReady;
 
-    private boolean ready1; // Boolean value, if equal to true, finger #1 has not yet swiped
-    private boolean ready2; // Boolean value, if equal to true, finger #2 has not yet swiped
+    private float leftY;
+    private float rightY;
 
     private int w;
     private int h;
@@ -19,8 +20,6 @@ public class MotionHandler {
 
     public MotionHandler(World world) {
         this.world = world;
-        this.ready1 = true;
-        this.ready2 = true;
     }
 
     // Scale to screen size
@@ -31,65 +30,54 @@ public class MotionHandler {
     }
 
     // Interpret and handle motion events from user touching screen
-    public void handleMotion(MotionEvent motionEvent) {
-        float x = motionEvent.getX();
-        float y = motionEvent.getY();
-        int actionIndex = motionEvent.getActionIndex();
+    public void handleMotion(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
 
-        switch (motionEvent.getAction()) {
+        switch (event.getActionMasked()) {
 
-            // Finger touches screen
+            // Finger touches down on screen
             case MotionEvent.ACTION_DOWN:
-                if (actionIndex == 0) {
-                    yStart1 = y;
-                    ready1 = true;
-                } else if (actionIndex == 1) {
-                    yStart2 = y;
-                    ready2 = true;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                if (x < w / 2) {
+                    leftReady = true;
+                    leftY = y;
+                } else {
+                    rightReady = true;
+                    rightY = y;
                 }
                 break;
 
             // Finger moves across screen
             case MotionEvent.ACTION_MOVE:
-
-                // Determine swipe distance
+                Log.i("Action", "move");
                 float dY;
-                if (actionIndex == 0 && ready1) {
-                    dY = y - yStart1;
-                } else if (actionIndex == 1 && ready2) {
-                    dY = y - yStart2;
+                if (x < w / 2 && leftReady) {
+                    dY = y - leftY;
+                } else if (x >= w / 2 && rightReady) {
+                    dY = y - rightY;
                 } else {
                     break;
                 }
 
-                // Finger has swiped
                 if (Math.abs(dY) > SWIPE_THRESHOLD) {
-
-                    // Upward swipe, left half
-                    if (dY < 0 && x < w / 2) {
-                        world.leftUpAction();
-
-                    // Upward swipe, right half
-                    } else if (dY < 0 && x > w / 2) {
-                        world.rightUpAction();
-
-                    // Downward swipe, left half
-                    } else if (dY > 0 && x < w / 2) {
-                        world.leftDownAction();
-
-                    // Downward swipe, right half
+                    Log.i("Action", "2");
+                    if (x < w / 2) {
+                        if (dY < 0) {
+                            world.leftUpAction();
+                        } else {
+                            world.leftDownAction();
+                        }
+                        leftReady = false;
                     } else {
-                        world.rightDownAction();
-                    }
-
-                    // The user must lift finger before swiping again
-                    if (actionIndex == 0) {
-                        ready1 = false;
-                    } else {
-                        ready2 = false;
+                        if (dY < 0) {
+                            world.rightUpAction();
+                        } else {
+                            world.rightDownAction();
+                        }
+                        rightReady = false;
                     }
                 }
-
                 break;
         }
     }
